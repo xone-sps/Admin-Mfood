@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->enum('status_user', ['Pending', 'Approved', 'Reject'])->default('Pending');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
