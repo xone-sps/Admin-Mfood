@@ -11,7 +11,6 @@ class ApiLoginController extends Controller
 {
     # Admin-Sign-in
     public function AdminSignIn(Request $request){
-        return $request->all();
         $http = new \GuzzleHttp\Client;
         try {
             $response = $http->post(config('services.passport_password.password_grant_uri'), [
