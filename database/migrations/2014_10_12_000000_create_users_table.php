@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('user_type', ['Admin', 'Restaurant', 'Waiter', 'Kitchen', 'Cashier'])->default('Admin');
+            $table->enum('status_user', ['Pending', 'Approved', 'Reject'])->default('Pending');
             $table->rememberToken();
             $table->timestamps();
         });
