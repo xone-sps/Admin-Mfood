@@ -10,7 +10,7 @@ use App\User;
 class ApiLoginController extends Controller
 {
     # Admin-Sign-in
-    public function AdminSignIn(Request $request){
+    public function SignIn(Request $request){
         $http = new \GuzzleHttp\Client;
         try {
             $response = $http->post(config('services.passport_password.password_grant_uri'), [
