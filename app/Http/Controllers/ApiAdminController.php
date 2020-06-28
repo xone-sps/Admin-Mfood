@@ -16,7 +16,6 @@ class ApiAdminController extends Controller
     
     # Upload-File
     public function UploadFile(Request $request){
-        return $request->all();
         if ($request->hasfile('imageFile')) {
             $file = $request->file('imageFile');
             $names = md5(date('Y-m-d h:m:s') . microtime()) . time() . '_file.' . $file->getClientOriginalExtension();
