@@ -21,10 +21,11 @@ Route::post('sign-in', 'ApiLoginController@SignIn');
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::post('upload-file', 'ApiAdminController@UploadFile');
 
 Route::group(['middleware' => 'auth:api'], function(){
     # Upload-File
-    Route::post('upload-file', 'ApiAdminController@UploadFile');
+    // Route::post('upload-file', 'ApiAdminController@UploadFile');
 
     # Restaurants
     Route::get('list-restaurants', 'ApiAdminController@ListRestaurants');
