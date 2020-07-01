@@ -17,13 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('sign-in', 'ApiLoginController@SignIn');
 
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 Route::post('upload-file', 'ApiAdminController@UploadFile');
 
-Route::group(['middleware' => 'auth:api'], function(){
+// Route::group(['middleware' => 'auth:api'], function(){
+
     # Upload-File
     // Route::post('upload-file', 'ApiAdminController@UploadFile');
 
@@ -51,8 +48,20 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('edit-kitchens/{id}', 'ApiAdminController@Editkitchens');
     Route::get('delete-kitchens/{id}', 'ApiAdminController@Deletekitchens');
 
+    # Product-Types
+    Route::get('list-product-types', 'ApiAdminController@ListProductType');
+    Route::post('add-product-types', 'ApiAdminController@AddProductType');
+    Route::post('edit-product-types/{id}', 'ApiAdminController@EditProductType');
+    Route::get('delete-product-types/{id}', 'ApiAdminController@DeleteProductType');
+
+    # Products
+    Route::get('list-products', 'ApiAdminController@ListProducts');
+    Route::post('add-products', 'ApiAdminController@AddProducts');
+    Route::post('edit-products/{id}', 'ApiAdminController@EditProducts');
+    Route::get('delete-products/{id}', 'ApiAdminController@DeleteProducts');
     
-});
+    
+// });
 
 
 

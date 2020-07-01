@@ -16,7 +16,7 @@ class waiter extends Model
 
     # Add-Waiter
     public static function AddWaiter($item){
-        $checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
+        //$checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
     
         $add_user = new User;
         $add_user->name = $item->name;
@@ -31,7 +31,8 @@ class waiter extends Model
         $add_waiter->name = $item->name;
         $add_waiter->sure = $item->sure;
         $add_waiter->user_id = $add_user->id;
-        $add_waiter->restaurant_id = $checkDate->id;
+        //$add_waiter->restaurant_id = $checkDate->id;
+        $add_waiter->restaurant_id = 1;
         $add_waiter->save();
 
         return true;

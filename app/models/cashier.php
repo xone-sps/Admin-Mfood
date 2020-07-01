@@ -17,7 +17,7 @@ class cashier extends Model
     
     # Add Cashier
     public static function AddCashiers($item){
-        $checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
+        //$checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
     
         $add_user = new User;
         $add_user->name = $item->name;
@@ -32,7 +32,8 @@ class cashier extends Model
         $add_cashier->name = $item->name;
         $add_cashier->sure = $item->sure;
         $add_cashier->user_id = $add_user->id;
-        $add_cashier->restaurant_id = $checkDate->id;
+        // $add_cashier->restaurant_id = $checkDate->id;
+        $add_cashier->restaurant_id = 1;
         $add_cashier->save();
 
         return true;

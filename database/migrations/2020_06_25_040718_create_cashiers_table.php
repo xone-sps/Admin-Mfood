@@ -15,9 +15,9 @@ class CreateCashiersTable extends Migration
     {
         Schema::create('cashiers', function (Blueprint $table) {
             $table->id();
-            $table->string('card_id');
-            $table->string('name');
-            $table->string('sure');
+            $table->string('card_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('sure')->nullable();
             $table->bigInteger('restaurant_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->timestamps();

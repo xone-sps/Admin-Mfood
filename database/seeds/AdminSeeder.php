@@ -23,5 +23,7 @@ class AdminSeeder extends Seeder
             'user_type' => 'Admin',
             'status_user' => 'Approved',
         ]);
+
+        
     }
 }
