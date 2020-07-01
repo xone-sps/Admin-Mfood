@@ -389,6 +389,7 @@ class ApiAdminController extends Controller
         ]);
     }
     public function AddProductType(Request $request){
+        $request->all();
         $rules = [
             'type' => 'required', 
         ];
