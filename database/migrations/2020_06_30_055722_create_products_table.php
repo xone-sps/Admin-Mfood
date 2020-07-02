@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('product_type_id')->unsigned()->nullable();
             $table->bigInteger('unit_id')->unsigned()->nullable();
             $table->bigInteger('restaurant_id')->unsigned()->nullable();
+            $table->string('file');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('product_type_id')
