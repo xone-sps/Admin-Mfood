@@ -21,9 +21,6 @@ Route::post('upload-file', 'ApiAdminController@UploadFile');
 
 // Route::group(['middleware' => 'auth:api'], function(){
 
-    # Upload-File
-    // Route::post('upload-file', 'ApiAdminController@UploadFile');
-
     # Restaurants
     Route::get('list-restaurants', 'ApiAdminController@ListRestaurants');
     Route::post('add-restaurants', 'ApiAdminController@AddRestaurants');
@@ -61,6 +58,10 @@ Route::post('upload-file', 'ApiAdminController@UploadFile');
     Route::get('delete-products/{id}', 'ApiAdminController@DeleteProducts');
     
     
+    # Filter List-Menu
+    Route::get('filter-list-menu/{type_id}', 'FilterController@FilterListMenu');
+    
+
 // });
 
 
