@@ -12,7 +12,7 @@ class product extends Model
 
         $fileExtension = \File::extension($oldPath);
         $newName = $fileName.'.'.$fileExtension;
-        $newPathWithName = 'images/restaurants/'.$newName;
+        $newPathWithName = 'images/restaurants/file_menu/'.$newName;
 
         if(\File::copy($oldPath , $newPathWithName)){
             if(isset($item->file)){
