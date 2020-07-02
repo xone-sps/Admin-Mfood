@@ -453,7 +453,8 @@ class ApiAdminController extends Controller
     # CRUD-Products
     public function ListProducts(){
         $products = product::select('products.id', 'products.product_name', 
-        'products.amount', 'products.price', 'unit.unit', 'product_type.type')
+        'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
+        'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
         ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
         ->where('products.restaurant_id', 1)
@@ -467,7 +468,6 @@ class ApiAdminController extends Controller
         ]);
     }
     public function AddProducts(Request $request){
-        return $request->all();
         $add_product = product::AddProducts($request);
 
         if($add_product == true){
@@ -481,5 +481,8 @@ class ApiAdminController extends Controller
                 'msg' => 'ເກີດຂໍ້ຜິດພາດ...'
             ]);
         }
+    }
+    public function EditProducts(Request $request, $id){
+        return $request->all();
     }
 }
