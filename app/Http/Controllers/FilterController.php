@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\product_type;
 use App\models\product;
-
+use DB;
 
 class FilterController extends Controller
 {
@@ -22,6 +22,32 @@ class FilterController extends Controller
         ->get();
         return response()->json([
             'filters' => $filters
+        ]);
+    }
+
+    public function ListData(){
+        $resume = DB::table('resume')->select('resume.id')->limit(20)->get();
+        $resume->map(function($data){
+            $data->contract = DB::table('resume_contact')->where('resume_id', $data->id)->select('phone')->first();
+            $data->education_history = DB::table('resume_education_history')
+            ->select('subject')
+            ->limit(20)->get();
+            $data->employment_history = DB::table('resume_employment_history')
+            ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
+            ->where('resume_id', $data->id)
+            ->select('position', 'level.name')
+            ->limit(20)->get();
+            $data->employment_history = DB::table('resume_employment_history')
+            ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
+            ->where('resume_id', $data->id)
+            ->select('position', 'level.name')
+            ->limit(20)->get();
+            
+
+        });
+
+        return response()->json([
+            'resume' => $resume
         ]);
     }
 }

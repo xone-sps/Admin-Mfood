@@ -16,9 +16,7 @@ class kitchen extends Model
 
 
     # Add-Kitchens
-    public static function Addkitchen($item){
-        //$checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
-    
+    public static function Addkitchen($item, $restaurantId){
         $add_user = new User;
         $add_user->name = $item->name;
         $add_user->email = $item->email;
@@ -32,8 +30,7 @@ class kitchen extends Model
         $add_kitchen->name = $item->name;
         $add_kitchen->sure = $item->sure;
         $add_kitchen->user_id = $add_user->id;
-        // $add_kitchen->restaurant_id = $checkDate->id;
-        $add_kitchen->restaurant_id = 1;
+        $add_kitchen->restaurant_id = $restaurantId;
         $add_kitchen->save();
 
         return true;

@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\Auth;
 class ApiAdminController extends Controller
 {
     
+    // public $restaurant;
+
+    // public function __construct()
+    // {
+    //     $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
+    // }
+
+
     # Upload-File
     public function UploadFile(Request $request){
         if ($request->hasfile('imageFile')) {
@@ -32,7 +40,10 @@ class ApiAdminController extends Controller
     }
 
     public function ListRestaurants(){
-        $restaurant = restaurant::all();
+        $restaurant = restaurant::select('restaurants.*', 'user.email')
+        ->leftjoin('users as user', 'user.id', '=', 'restaurants.user_id')
+        ->orderBy('id', 'desc')
+        ->get();
 
         return response()->json([
             'restaurant' => $restaurant
@@ -107,8 +118,10 @@ class ApiAdminController extends Controller
         $waiters = waiter::select('waiters.id', 'waiters.card_id', 
         'waiters.name', 'waiters.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'waiters.user_id')
-        ->where('restaurant_id', 1)
-        ->orderBy('id', 'desc')->get();
+        ->where('waiters.restaurant_id', $this->restaurant->id)
+        ->orderBy('waiters.id', 'desc')
+        ->get();
+
         return response()->json([
             'waiters' => $waiters
         ]);
@@ -131,8 +144,7 @@ class ApiAdminController extends Controller
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
 
-        $add_waiters = waiter::AddWaiter($request);
-
+        $add_waiters = waiter::AddWaiter($request, $this->restaurant->id);
         if($add_waiters == true){
             return response()->json([
                 'success' => true,
@@ -198,7 +210,7 @@ class ApiAdminController extends Controller
         $cashiers = cashier::select('cashiers.id', 'cashiers.card_id', 
         'cashiers.name', 'cashiers.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'cashiers.user_id')
-        ->where('restaurant_id', 1)
+        ->where('cashiers.restaurant_id', $this->restaurant->id)
         ->orderBy('cashiers.id', 'desc')
         ->get();
         return response()->json([
@@ -223,7 +235,7 @@ class ApiAdminController extends Controller
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
 
-        $add_cashier = cashier::AddCashiers($request);
+        $add_cashier = cashier::AddCashiers($request, $this->restaurant->id);
 
         if($add_cashier == true){
             return response()->json([
@@ -290,7 +302,7 @@ class ApiAdminController extends Controller
         $kitchens = kitchen::select('kitchens.id', 'kitchens.card_id', 
         'kitchens.name', 'kitchens.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'kitchens.user_id')
-        ->where('restaurant_id', 1)
+        ->where('kitchens.restaurant_id', $this->restaurant->id)
         ->orderBy('kitchens.id', 'desc')
         ->get();
         return response()->json([
@@ -315,7 +327,7 @@ class ApiAdminController extends Controller
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
 
-        $add_kitchen = kitchen::Addkitchen($request);
+        $add_kitchen = kitchen::Addkitchen($request, $this->restaurant->id);
 
         if($add_kitchen == true){
             return response()->json([
@@ -381,7 +393,7 @@ class ApiAdminController extends Controller
     public function ListProductType(){
         $product_types = product_type::select('product_types.id', 'product_types.type')
         ->join('restaurants as restaurant', 'restaurant.id', '=', 'product_types.restaurant_id')
-        ->where('product_types.restaurant_id', 1)
+        ->where('product_types.restaurant_id', $this->restaurant->id)
         ->orderBy('product_types.id', 'desc')
         ->get();
         return response()->json([
@@ -397,7 +409,7 @@ class ApiAdminController extends Controller
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
 
-        $add_productType = product_type::AddProductType($request);
+        $add_productType = product_type::AddProductType($request, $this->restaurant->id);
 
         if($add_productType == true){
             return response()->json([
@@ -457,7 +469,7 @@ class ApiAdminController extends Controller
         'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
         ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-        ->where('products.restaurant_id', 1)
+        ->where('products.restaurant_id', $this->restaurant->id)
         ->orderBy('products.id', 'desc')
         ->get();
         $units = unit::orderBy('id', 'desc')->get();
@@ -468,7 +480,7 @@ class ApiAdminController extends Controller
         ]);
     }
     public function AddProducts(Request $request){
-        $add_product = product::AddProducts($request);
+        $add_product = product::AddProducts($request, $this->restaurant->id);
 
         if($add_product == true){
             return response()->json([
@@ -483,6 +495,18 @@ class ApiAdminController extends Controller
         }
     }
     public function EditProducts(Request $request, $id){
-        return $request->all();
+        $edit_product = product::EditProducts($request, $id);
+
+        if($edit_product == true){
+            return response()->json([
+                'success' => true,
+                'msg' => 'ເເກ້ໄຂຂໍ້ມູນສຳເລັດ...'
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'msg' => 'ເກີດຂໍ້ຜິດພາດ...'
+            ]);
+        }
     }
 }

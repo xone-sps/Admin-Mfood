@@ -12,10 +12,10 @@ class product_type extends Model
 
 
     # Add
-    public static function AddProductType($item){
+    public static function AddProductType($item, $restaurantId){
         $add = new self;
         $add->type = $item->type;
-        $add->restaurant_id = 1;
+        $add->restaurant_id = $restaurantId;
         $add->save();
         if($add){
             return true;

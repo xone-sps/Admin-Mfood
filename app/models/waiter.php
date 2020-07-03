@@ -15,9 +15,7 @@ class waiter extends Model
     use SoftDeletes;
 
     # Add-Waiter
-    public static function AddWaiter($item){
-        //$checkDate = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
-    
+    public static function AddWaiter($item, $restaurantId){
         $add_user = new User;
         $add_user->name = $item->name;
         $add_user->email = $item->email;
@@ -31,8 +29,7 @@ class waiter extends Model
         $add_waiter->name = $item->name;
         $add_waiter->sure = $item->sure;
         $add_waiter->user_id = $add_user->id;
-        //$add_waiter->restaurant_id = $checkDate->id;
-        $add_waiter->restaurant_id = 1;
+        $add_waiter->restaurant_id = $restaurantId;
         $add_waiter->save();
 
         return true;
