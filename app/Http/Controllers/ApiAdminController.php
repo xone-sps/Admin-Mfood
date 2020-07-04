@@ -19,10 +19,10 @@ class ApiAdminController extends Controller
     
     public $restaurant;
 
-    // public function __construct()
-    // {
-    //     $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
-    // }
+    public function __construct()
+    {
+        $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
+    }
 
 
     # Upload-File
@@ -393,8 +393,7 @@ class ApiAdminController extends Controller
     public function ListProductType(){
         $product_types = product_type::select('product_types.id', 'product_types.type')
         ->join('restaurants as restaurant', 'restaurant.id', '=', 'product_types.restaurant_id')
-        //->where('product_types.restaurant_id', $this->restaurant->id)
-        ->where('product_types.restaurant_id', 1)
+        ->where('product_types.restaurant_id', $this->restaurant->id)
         ->orderBy('product_types.id', 'desc')
         ->get();
         return response()->json([
@@ -470,8 +469,7 @@ class ApiAdminController extends Controller
         'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
         ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-        // ->where('products.restaurant_id', $this->restaurant->id)
-        ->where('products.restaurant_id', 1)
+        ->where('products.restaurant_id', $this->restaurant->id)
         ->orderBy('products.id', 'desc')
         ->get();
         $units = unit::orderBy('id', 'desc')->get();

@@ -20,7 +20,7 @@ Route::post('sign-out', 'ApiLoginController@SignOut');
 
 Route::post('upload-file', 'ApiAdminController@UploadFile');
 
-// Route::group(['middleware' => 'auth:api'], function(){
+Route::group(['middleware' => 'auth:api'], function(){
 
     # Restaurants
     Route::get('list-restaurants', 'ApiAdminController@ListRestaurants');
@@ -64,18 +64,19 @@ Route::post('upload-file', 'ApiAdminController@UploadFile');
 
     /* .............................................................................. */
 
+    # Order-Products
+    Route::post('order-products', 'OrderProductController@OrderProducts');
+
     # List-Order AND List-OrderDetail
     Route::get('list-order-products', 'OrderProductController@ListOrderProducts');
     Route::get('list-order-detail', 'OrderProductController@ListOrderDetails');
-    # Order-Products
-    Route::post('order-products', 'OrderProductController@OrderProducts');
+    
     # Payment-Order
     Route::get('payment-order/{order_id}', 'OrderProductController@PaymentOrder');
     # Update Status-Order After Cooking On Success
     Route::get('update-status-order-detail/{orderdetail_id}', 'OrderProductController@UpdateStatusorderDetails');
 
-
-// });
+});
 
 Route::get('list-data', 'FilterController@ListData');
 
