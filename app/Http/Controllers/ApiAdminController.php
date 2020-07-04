@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class ApiAdminController extends Controller
 {
     
-    // public $restaurant;
+    public $restaurant;
 
     // public function __construct()
     // {
