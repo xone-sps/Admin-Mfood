@@ -469,7 +469,8 @@ class ApiAdminController extends Controller
         'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
         ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-        ->where('products.restaurant_id', $this->restaurant->id)
+        // ->where('products.restaurant_id', $this->restaurant->id)
+        ->where('products.restaurant_id', 1)
         ->orderBy('products.id', 'desc')
         ->get();
         $units = unit::orderBy('id', 'desc')->get();
