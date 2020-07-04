@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('sign-in', 'ApiLoginController@SignIn');
+Route::post('sign-out', 'ApiLoginController@SignOut');
 
 Route::post('upload-file', 'ApiAdminController@UploadFile');
 

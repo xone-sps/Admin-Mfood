@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 
 
@@ -42,5 +43,17 @@ class ApiLoginController extends Controller
         $data['user'] = User::where('email', $request->email)->first();
         $data['success'] = true;
         return $data;
+    }
+
+    # Sign-Out
+    public function SignOut(){
+        $token = Auth::guard('api')->user()->token();
+        if (isset($token)) {
+            $token->delete();
+        }
+        return response()->json([
+            'success' => true,
+            'msg' => 'ອອກຈາກລະບົບສຳເລັດເເລ້ວ'
+        ]);
     }
 }
