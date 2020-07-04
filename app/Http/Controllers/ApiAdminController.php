@@ -393,7 +393,8 @@ class ApiAdminController extends Controller
     public function ListProductType(){
         $product_types = product_type::select('product_types.id', 'product_types.type')
         ->join('restaurants as restaurant', 'restaurant.id', '=', 'product_types.restaurant_id')
-        ->where('product_types.restaurant_id', $this->restaurant->id)
+        //->where('product_types.restaurant_id', $this->restaurant->id)
+        ->where('product_types.restaurant_id', 1)
         ->orderBy('product_types.id', 'desc')
         ->get();
         return response()->json([
