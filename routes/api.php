@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('delete-products/{id}', 'ApiAdminController@DeleteProducts');
 
     # Filter List-Menu
+    Route::get('list-menu', 'FilterController@ListMenu');
     Route::get('filter-list-menu/{type_id}', 'FilterController@FilterListMenu');
 
     #Customer
