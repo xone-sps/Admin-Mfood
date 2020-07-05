@@ -31,7 +31,7 @@ class FilterController extends Controller
         'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
         ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-        ->where('products.restaurant_id', 1)
+        ->where('products.restaurant_id', 2)
         ->where('products.product_type_id', $typeId)
         ->orderBy('products.id', 'desc')
         ->get();
@@ -40,6 +40,8 @@ class FilterController extends Controller
         ]);
     }
 
+
+    
     public function ListData(){
         $resume = DB::table('resume')->select('resume.id')->limit(20)->get();
         $resume->map(function($data){

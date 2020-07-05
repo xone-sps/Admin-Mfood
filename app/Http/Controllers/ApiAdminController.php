@@ -24,7 +24,6 @@ class ApiAdminController extends Controller
         $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
     }
 
-    
 
     public function ListRestaurants(){
         $restaurant = restaurant::select('restaurants.*', 'user.email')
