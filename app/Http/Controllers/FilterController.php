@@ -51,7 +51,7 @@ class FilterController extends Controller
     }
 
 
-    public function FilterListMenu(Request $request, $typeId)
+    public function ListMenu(Request $request, $typeId)
     {
         $user = $request->user('api');
         if (isset($user, $user->restaurant)) {
