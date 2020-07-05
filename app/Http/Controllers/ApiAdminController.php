@@ -24,20 +24,7 @@ class ApiAdminController extends Controller
         $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
     }
 
-
-    # Upload-File
-    public function UploadFile(Request $request){
-        if ($request->hasfile('imageFile')) {
-            $file = $request->file('imageFile');
-            $names = md5(date('Y-m-d h:m:s') . microtime()) . time() . '_file.' . $file->getClientOriginalExtension();
-            $file->move(public_path() . '/images/uploadFile/', $names);
-        }
-
-        return response()->json([
-            'success' => true,
-            'fileName' => $names
-        ]);
-    }
+    
 
     public function ListRestaurants(){
         $restaurant = restaurant::select('restaurants.*', 'user.email')

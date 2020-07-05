@@ -9,7 +9,22 @@ use DB;
 
 class FilterController extends Controller
 {
+    # Upload-File
+    public function UploadFile(Request $request){
+        if ($request->hasfile('imageFile')) {
+            $file = $request->file('imageFile');
+            $names = md5(date('Y-m-d h:m:s') . microtime()) . time() . '_file.' . $file->getClientOriginalExtension();
+            $file->move(public_path() . '/images/uploadFile/', $names);
+        }
+
+        return response()->json([
+            'success' => true,
+            'fileName' => $names
+        ]);
+    }
     
+
+
     public function FilterListMenu($typeId){
         $filters = product::select('products.id', 'products.product_name', 
         'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
