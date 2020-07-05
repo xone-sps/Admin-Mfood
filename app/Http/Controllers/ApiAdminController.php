@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use App\models\restaurant;
 use App\models\cashier;
-use App\models\waiter;
 use App\models\kitchen;
-use App\models\product_type;
 use App\models\product;
+use App\models\product_type;
+use App\models\restaurant;
 use App\models\unit;
-use Validator;
+use App\models\waiter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ApiAdminController extends Controller
 {
-    
+
     public $restaurant;
 
     public function __construct()
     {
-        $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id)->first();
+        $this->restaurant = restaurant::where('user_id', Auth::guard('api')->user()->id??null)->first();
     }
 
-    
+
 
     public function ListRestaurants(){
         $restaurant = restaurant::select('restaurants.*', 'user.email')
@@ -54,7 +53,7 @@ class ApiAdminController extends Controller
         $user = restaurant::where('id', $id)->first();
 
         $rules = [
-            'name' => 'required', 
+            'name' => 'required',
             'mobile' => 'required|numeric',
             'address' => 'required',
             'logo' => 'required',
@@ -102,7 +101,7 @@ class ApiAdminController extends Controller
 
     # Waiters
     public function ListWaiter(){
-        $waiters = waiter::select('waiters.id', 'waiters.card_id', 
+        $waiters = waiter::select('waiters.id', 'waiters.card_id',
         'waiters.name', 'waiters.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'waiters.user_id')
         ->where('waiters.restaurant_id', $this->restaurant->id)
@@ -115,8 +114,8 @@ class ApiAdminController extends Controller
     }
     public function AddWaiter(Request $request){
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'password' => 'required',
             'email' => 'required|unique:users'
@@ -148,8 +147,8 @@ class ApiAdminController extends Controller
         $waiter = waiter::where('id', $id)->first();
 
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'email' => 'required|unique:users,email,'.$waiter->user_id
         ];
@@ -161,7 +160,7 @@ class ApiAdminController extends Controller
             'email.unique' => 'ອີເມວນີ້ມີໃນລະບົບເເລ້ວ...',
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
-        
+
         $edit_waiters = waiter::EditWaiter($request, $waiter);
 
         if($edit_waiters == true){
@@ -178,7 +177,7 @@ class ApiAdminController extends Controller
     }
     public function DeleteWaiter($id){
         $delete_waiter = waiter::DeleteWaiter($id);
-        
+
         if($delete_waiter == true){
             return response()->json([
                 'success' => true,
@@ -194,7 +193,7 @@ class ApiAdminController extends Controller
 
     # Cashiers
     public function ListCashiers(){
-        $cashiers = cashier::select('cashiers.id', 'cashiers.card_id', 
+        $cashiers = cashier::select('cashiers.id', 'cashiers.card_id',
         'cashiers.name', 'cashiers.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'cashiers.user_id')
         ->where('cashiers.restaurant_id', $this->restaurant->id)
@@ -206,8 +205,8 @@ class ApiAdminController extends Controller
     }
     public function AddCashiers(Request $request){
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'password' => 'required',
             'email' => 'required|unique:users'
@@ -240,8 +239,8 @@ class ApiAdminController extends Controller
         $cashier = cashier::where('id', $id)->first();
 
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'email' => 'required|unique:users,email,'.$cashier->user_id
         ];
@@ -253,7 +252,7 @@ class ApiAdminController extends Controller
             'email.unique' => 'ອີເມວນີ້ມີໃນລະບົບເເລ້ວ...',
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
-        
+
         $edit_cashier = cashier::EditWaiter($request, $cashier);
 
         if($edit_cashier == true){
@@ -270,7 +269,7 @@ class ApiAdminController extends Controller
     }
     public function DeleteCashiers($id){
         $delete_cashier = cashier::DeleteCashier($id);
-        
+
         if($delete_cashier == true){
             return response()->json([
                 'success' => true,
@@ -286,7 +285,7 @@ class ApiAdminController extends Controller
 
     # CRUD-Kitchens
     public function Listkitchens(){
-        $kitchens = kitchen::select('kitchens.id', 'kitchens.card_id', 
+        $kitchens = kitchen::select('kitchens.id', 'kitchens.card_id',
         'kitchens.name', 'kitchens.sure', 'user.email')
         ->join('users as user', 'user.id', '=', 'kitchens.user_id')
         ->where('kitchens.restaurant_id', $this->restaurant->id)
@@ -298,8 +297,8 @@ class ApiAdminController extends Controller
     }
     public function Addkitchens(Request $request){
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'password' => 'required',
             'email' => 'required|unique:users'
@@ -332,8 +331,8 @@ class ApiAdminController extends Controller
         $kitchen = kitchen::where('id', $id)->first();
 
         $rules = [
-            'name' => 'required', 
-            'sure' => 'required', 
+            'name' => 'required',
+            'sure' => 'required',
             'card_id' => 'required',
             'email' => 'required|unique:users,email,'.$kitchen->user_id
         ];
@@ -345,7 +344,7 @@ class ApiAdminController extends Controller
             'email.unique' => 'ອີເມວນີ້ມີໃນລະບົບເເລ້ວ...',
         ];
         $valueMsg = $this->validate($request, $rules, $msg);
-        
+
         $edit_kitchen = kitchen::Editkitchen($request, $kitchen);
 
         if($edit_kitchen == true){
@@ -362,7 +361,7 @@ class ApiAdminController extends Controller
     }
     public function Deletekitchens($id){
         $delete_kitchen = kitchen::Deletekitchen($id);
-        
+
         if($delete_kitchen == true){
             return response()->json([
                 'success' => true,
@@ -389,7 +388,7 @@ class ApiAdminController extends Controller
     }
     public function AddProductType(Request $request){
         $rules = [
-            'type' => 'required', 
+            'type' => 'required',
         ];
         $msg = [
             'type.required' => 'ກະລຸນາປ້ອນປະເພດກ່ອນ...',
@@ -412,7 +411,7 @@ class ApiAdminController extends Controller
     }
     public function EditProductType(Request $request, $id){
         $rules = [
-            'type' => 'required', 
+            'type' => 'required',
         ];
         $msg = [
             'type.required' => 'ກະລຸນາປ້ອນປະເພດກ່ອນ...',
@@ -435,7 +434,7 @@ class ApiAdminController extends Controller
     }
     public function DeleteProductType($id){
         $delete_productType = product_type::DeleteProductType($id);
-        
+
         if($delete_productType == true){
             return response()->json([
                 'success' => true,
@@ -451,7 +450,7 @@ class ApiAdminController extends Controller
 
     # CRUD-Products
     public function ListProducts(){
-        $products = product::select('products.id', 'products.product_name', 
+        $products = product::select('products.id', 'products.product_name',
         'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
         'product_type.type', 'product_type.id as proTypeId', 'products.file')
         ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')

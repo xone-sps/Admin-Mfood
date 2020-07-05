@@ -10,7 +10,8 @@ use DB;
 class FilterController extends Controller
 {
     # Upload-File
-    public function UploadFile(Request $request){
+    public function UploadFile(Request $request)
+    {
         if ($request->hasfile('imageFile')) {
             $file = $request->file('imageFile');
             $names = md5(date('Y-m-d h:m:s') . microtime()) . time() . '_file.' . $file->getClientOriginalExtension();
@@ -22,42 +23,49 @@ class FilterController extends Controller
             'fileName' => $names
         ]);
     }
-    
 
 
-    public function FilterListMenu($typeId){
-        $filters = product::select('products.id', 'products.product_name', 
-        'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
-        'product_type.type', 'product_type.id as proTypeId', 'products.file')
-        ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
-        ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-        ->where('products.restaurant_id', 1)
-        ->where('products.product_type_id', $typeId)
-        ->orderBy('products.id', 'desc')
-        ->get();
+    public function FilterListMenu(Request $request, $typeId)
+    {
+        $user = $request->user('api');
+        if (isset($user, $user->restaurant)) {
+            $filters = product::select('products.id', 'products.product_name',
+                'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
+                'product_type.type', 'product_type.id as proTypeId', 'products.file')
+                ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
+                ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
+                ->where('products.restaurant_id', $user->restaurant->id)
+                ->where('products.product_type_id', $typeId)
+                ->orderBy('products.id', 'desc')
+                ->get();
+            return response()->json([
+                'filters' => $filters
+            ]);
+        }
         return response()->json([
-            'filters' => $filters
+            'filters' => []
         ]);
     }
 
-    public function ListData(){
+    public function ListData()
+    {
         $resume = DB::table('resume')->select('resume.id')->limit(20)->get();
-        $resume->map(function($data){
+        $resume->map(function ($data) {
             $data->contract = DB::table('resume_contact')->where('resume_id', $data->id)->select('phone')->first();
             $data->education_history = DB::table('resume_education_history')
-            ->select('subject')
-            ->limit(20)->get();
+                ->select('subject')
+                ->limit(20)->get();
             $data->employment_history = DB::table('resume_employment_history')
-            ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
-            ->where('resume_id', $data->id)
-            ->select('position', 'level.name')
-            ->limit(20)->get();
+                ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
+                ->where('resume_id', $data->id)
+                ->select('position', 'level.name')
+                ->limit(20)->get();
             $data->employment_history = DB::table('resume_employment_history')
-            ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
-            ->where('resume_id', $data->id)
-            ->select('position', 'level.name')
-            ->limit(20)->get();
-            
+                ->leftjoin('job_level as level', 'level.id', '=', 'resume_employment_history.level_id')
+                ->where('resume_id', $data->id)
+                ->select('position', 'level.name')
+                ->limit(20)->get();
+
 
         });
 

@@ -1,0 +1,18 @@
+<?php
+
+namespace App\models;
+
+use App\User;
+use Illuminate\Database\Eloquent\Model;
+
+class Customer extends Model
+{
+    public function restaurant()
+    {
+        return $this->belongsTo(restaurant::class, 'restaurant_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}

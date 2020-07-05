@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Request\OrderProduct\StoreRequest;
 use App\models\order;
-use App\models\cashier;
 use App\models\order_detail;
 
 
@@ -19,20 +18,20 @@ class OrderProductController extends Controller
     // }
 
 
-
     # List-Order-Products
-    public function ListOrderProducts(){
+    public function ListOrderProducts()
+    {
         $listPending = order::where('cashier_id', 1)
-        ->where('status_payment', 'pending')
-        ->get();
-        $listPending->map(function($data){
+            ->where('status_payment', 'pending')
+            ->get();
+        $listPending->map(function ($data) {
             $data->orderDetails = order_detail::where('order_id', $data->id)->get();
         });
 
         $listSuccess = order::where('cashier_id', 1)
-        ->where('status_payment', 'success')
-        ->get();
-        $listSuccess->map(function($data){
+            ->where('status_payment', 'success')
+            ->get();
+        $listSuccess->map(function ($data) {
             $data->orderDetails = order_detail::where('order_id', $data->id)->get();
         });
 
@@ -43,7 +42,8 @@ class OrderProductController extends Controller
     }
 
     # List-OrderDetails
-    public function ListOrderDetails(){
+    public function ListOrderDetails()
+    {
         $listOrderDetail_Ordered = order_detail::where('status_cooking', 'ordered')->get();
         $listOrderDetail_CookedDone = order_detail::where('status_cooking', 'cooked_done')->get();
 
@@ -54,14 +54,15 @@ class OrderProductController extends Controller
     }
 
     # Order-Products
-    public function OrderProducts(Request $request){
-        $order = order::OrderProducts($request);
-        if($order == true){
+    public function OrderProducts(StoreRequest $request)
+    {
+        $order = order::OrderProducts($request->user('api')->customer, $request->orders);
+        if ($order == true) {
             return response()->json([
                 'success' => true,
                 'msg' => 'ສັ່ງຊື້ສຳເລັດເເລ້ວ...'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'msg' => 'ເກີດຂໍ້ຜິດພາດ...'
@@ -70,23 +71,24 @@ class OrderProductController extends Controller
     }
 
     # Payment-Order
-    public function PaymentOrder($orderId){
+    public function PaymentOrder($orderId)
+    {
         $checkOrderId = order::where('id', $orderId)->where('status_payment', 'success')->first();
-        
-        if(!isset($checkOrderId)){
+
+        if (!isset($checkOrderId)) {
             $payment = order::PaymentOrder($orderId);
-            if($payment == true){
+            if ($payment == true) {
                 return response()->json([
                     'success' => true,
                     'msg' => 'ຊຳລະສຳເລັດເເລ້ວ...'
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     'success' => false,
                     'msg' => 'ເກີດຂໍ້ຜິດພາດ...'
                 ]);
             }
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'msg' => 'ເລກບີນນີ້ໄດ້ຊຳລະເງີນເເລ້ວ...'
@@ -95,14 +97,15 @@ class OrderProductController extends Controller
     }
 
     # Update Status-OrderDetails
-    public function UpdateStatusorderDetails($detailId){
+    public function UpdateStatusorderDetails($detailId)
+    {
         $updateOrderDetail = order_detail::UpdateStatusorderDetails($detailId);
-        if($updateOrderDetail == true){
+        if ($updateOrderDetail == true) {
             return response()->json([
                 'success' => true,
                 'msg' => 'ຄົວສຳເລັດເເລ້ວ...'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'msg' => 'ເກີດຂໍ້ຜິດພາດ...'

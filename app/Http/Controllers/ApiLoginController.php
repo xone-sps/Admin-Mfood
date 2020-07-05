@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Support\Facades\Auth;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class ApiLoginController extends Controller
@@ -39,7 +38,7 @@ class ApiLoginController extends Controller
             return response()->json('Something went wrong on the serve', $e->getCode());
         }
         $data = json_decode((string)$response->getBody(), true);
-        
+
         $data['user'] = User::where('email', $request->email)->first();
         $data['success'] = true;
         return $data;

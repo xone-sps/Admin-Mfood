@@ -21,7 +21,7 @@ Route::post('sign-out', 'ApiLoginController@SignOut');
 Route::post('upload-file', 'FilterController@UploadFile');
 
 
-Route::group(['middleware' => 'auth:api'], function(){
+Route::group(['middleware' => 'auth:api'], function () {
 
     # Restaurants
     Route::get('list-restaurants', 'ApiAdminController@ListRestaurants');
@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('add-waiters', 'ApiAdminController@AddWaiter');
     Route::post('edit-waiters/{id}', 'ApiAdminController@EditWaiter');
     Route::get('delete-waiters/{id}', 'ApiAdminController@DeleteWaiter');
-    
+
     # Cashiers
     Route::get('list-cashiers', 'ApiAdminController@ListCashiers');
     Route::post('add-cashiers', 'ApiAdminController@AddCashiers');
@@ -58,28 +58,31 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('add-products', 'ApiAdminController@AddProducts');
     Route::post('edit-products/{id}', 'ApiAdminController@EditProducts');
     Route::get('delete-products/{id}', 'ApiAdminController@DeleteProducts');
-    
+
     # Filter List-Menu
     Route::get('filter-list-menu/{type_id}', 'FilterController@FilterListMenu');
+
+    #Customer
+    Route::resource('/customer', 'APICustomerController', ['only' => ['index', 'store', 'edit', 'update',]]);
+    Route::delete('/customer/{id}/delete', 'APICustomerController@delete')->name('customer.delete');
 
 
     /* .............................................................................. */
 
+    #Checking Out
+    Route::post('checking-out', 'APICheckoutController@checkingOrderProductsQuantity');
     # Order-Products
     Route::post('order-products', 'OrderProductController@OrderProducts');
 
     # List-Order AND List-OrderDetail
     Route::get('list-order-products', 'OrderProductController@ListOrderProducts');
     Route::get('list-order-detail', 'OrderProductController@ListOrderDetails');
-    
+
     # Payment-Order
     Route::get('payment-order/{order_id}', 'OrderProductController@PaymentOrder');
     # Update Status-Order After Cooking On Success
     Route::get('update-status-order-detail/{orderdetail_id}', 'OrderProductController@UpdateStatusorderDetails');
 
 });
-
-Route::get('list-data', 'FilterController@ListData');
-
 
 
