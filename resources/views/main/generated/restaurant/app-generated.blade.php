@@ -6,16 +6,16 @@
     {{-- @GeneratedResourcesTop--}}
     <link href=/generated/restaurant/css/about.ed047252.css rel=prefetch>
     <link href=/generated/restaurant/js/about.f4f85292.js rel=prefetch>
-    <link href=/generated/restaurant/css/app.e8bc0f9a.css rel=preload as=style>
-    <link href=/generated/restaurant/js/app.e1981ff8.js rel=preload as=script>
+    <link href=/generated/restaurant/css/app.6119c283.css rel=preload as=style>
+    <link href=/generated/restaurant/js/app.f57933d2.js rel=preload as=script>
     <link href=/generated/restaurant/js/chunk-vendors.c65b5e9d.js rel=preload as=script>
-    <link href=/generated/restaurant/css/app.e8bc0f9a.css rel=stylesheet>
+    <link href=/generated/restaurant/css/app.6119c283.css rel=stylesheet>
     {{-- @GeneratedResourcesTop--}}
 @endsection
 @section('scripts_footer')
     @include('main.generated.default-data')
     {{-- @GeneratedResourcesBottom--}}
     <script src=/generated/restaurant/js/chunk-vendors.c65b5e9d.js></script>
-    <script src=/generated/restaurant/js/app.e1981ff8.js></script>
+    <script src=/generated/restaurant/js/app.f57933d2.js></script>
     {{-- @GeneratedResourcesBottom--}}
 @endsection
