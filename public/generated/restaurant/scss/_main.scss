@@ -1,0 +1,68 @@
+@import './color.scss';
+@import './font.scss';
+@import './screen.scss';
+@import './type.scss';
+@import './input.scss';
+@import './table';
+
+
+h3, p, span{
+    font-family: $font;
+}
+
+.ant-form-item-label > label{
+    font-family: $font !important;
+}
+.title-name{
+    font-family: $font;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: -10px;
+    .icon-user{
+        width: 30px;
+    }
+    .line{
+        margin-top: -15px;
+        height: 1px !important;
+        background: #dbdbdb !important;
+    }
+}
+.box-info{
+    padding: 40px 0 0 160px;
+}
+.msg_error{
+    color: $red;
+    font-size: 18px;
+}
+
+// Css Control Button
+.button{
+    font-family: $font;
+    border: none;
+    background: $primary-color;
+    color: $white;
+    &:focus{
+        border: none;
+        box-shadow: none;
+    }
+}
+
+.input{
+    font-family: $font;
+    box-shadow: none;
+}
+input:not(:placeholder-shown){
+    border: 1px solid $primary-color;
+}
+
+// Group-Btn
+.group-btn{
+    .button{
+        background: $primary-color;
+        width: 100%;
+        border-radius: 50px;
+        border: none;
+        box-shadow: none;
+        margin-top: 15px;
+    }
+}

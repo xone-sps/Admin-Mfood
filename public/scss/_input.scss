@@ -1,0 +1,44 @@
+
+// Input
+.ant-input{
+    box-shadow: none !important;
+    font-family: $font !important;
+}
+.ant-input-affix-wrapper 
+.ant-input:not(:first-child){
+    padding-left: 35px !important;
+}
+.ant-input::placeholder{
+    font-family: $font !important;
+}
+
+// Select-Box
+.ant-select-selection{
+    font-family: $font !important;
+}
+.ant-select-focused .ant-select-selection, 
+.ant-select-selection:focus, .ant-select-selection:active{
+    box-shadow: none !important;
+}
+.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled){
+    font-family: $font !important;
+}
+.ant-select-dropdown-menu-item{
+    font-family: $font !important;
+}
+
+// Radio Button
+.ant-radio-group{
+    font-family: $font;
+    font-size: 18px;
+}
+
+// Msg-Validator
+.ant-form-explain, .ant-form-extra{
+    font-family: $font !important;
+}
+
+// Btn
+.ant-btn{
+    font-family: $font !important;
+}

@@ -1,0 +1,80 @@
+
+#mytable{
+    margin-top: 15px;
+    background-color: transparent;
+    //border-collapse: separate;
+    border-spacing: 0 5px;
+    thead{
+        border: none;
+        th{
+            white-space: pre;
+            font-size: 16px;
+            font-weight: normal;
+            border: none;
+            font-weight: bold;
+            font-family: $font;
+            background-color: black;
+            color: $white;
+            &.border-left{
+                border-top-left-radius: 3px;
+            }
+            &.border-right{
+                border-top-right-radius: 3px;
+            }
+        }
+    }
+    tbody{
+        td{
+            font-size: 16px;
+            vertical-align: middle !important;
+            background-color: $white;
+            padding: 8px !important;
+            font-family: $font;
+            font-weight: normal;
+            &.border-radius-left{
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+            }
+            &.border-radius-right{
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                text-align: right;
+                i{
+                    margin: 3px;
+                }
+                .icon-view{
+                    padding: 7px;
+                    background: $primary-color;
+                    border-radius: 5px;
+                    color: $white;
+                    text-align: center;
+                }
+                .icon-edit{
+                    padding: 7px;
+                    background: green;
+                    border-radius: 5px;
+                    color: $white;
+                    text-align: center;
+                }
+                .icon-delete{
+                    padding: 7px;
+                    background: $crimson;
+                    border-radius: 5px;
+                    color: $white;
+                    text-align: center;
+                }
+            }
+            &:hover{
+                cursor: pointer;
+            }
+            .img{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                background-size: cover;
+                background-position: center center;
+            }
+        }
+    }
+} 
