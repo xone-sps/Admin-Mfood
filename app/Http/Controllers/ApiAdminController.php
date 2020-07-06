@@ -56,7 +56,7 @@ class ApiAdminController extends Controller
             'name' => 'required',
             'mobile' => 'required|numeric',
             'address' => 'required',
-            'logo' => 'required',
+            'logo' => 'nullable',
             'email' => 'required|unique:users,email,'.$user->user_id
         ];
         $msg = [
@@ -64,7 +64,6 @@ class ApiAdminController extends Controller
             'mobile.required' => 'ກະລຸນາປ້ອນເບີຕິດຕໍ່ກ່ອນ...',
             'mobile.numeric' => 'ເບີຕິດຕໍ່ຄວນເປັນໂຕເລກ...',
             'address.required' => 'ກະລຸນາປ້ອນທີ່ຢູ່ກ່ອນ...',
-            'logo.required' => 'ກະລຸນາເລືອກໂລໂກກ່ອນ...',
             'email.required' => 'ກະລຸນາປ້ອນອີເມວກ່ອນ...',
             'email.unique' => 'ອີເມວນີ້ມີໃນລະບົບເເລ້ວ...',
         ];

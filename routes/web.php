@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => ''], function () {
+    Route::get('/', 'RestaurantController@index')->name('restaurant.index');
+    Route::get('/about', 'RestaurantController@index')->name('restaurant.about');
+    Route::get('/tab-manage', 'RestaurantController@index')->name('restaurant.manage');
+    Route::get('/tab-list-order', 'RestaurantController@index')->name('restaurant.list-order');
 });
