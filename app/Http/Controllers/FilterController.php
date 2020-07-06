@@ -28,13 +28,13 @@ class FilterController extends Controller
     public function ListMenu(Request $request)
     {
         $user = $request->user('api');
-        if (isset($user, $user->restaurant)) {
+        if (isset($user, $user->customer)) {
             $products = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file')
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-                ->where('products.restaurant_id', $user->restaurant->id)
+                ->where('products.restaurant_id', $user->customer->restaurant_id)
                 ->orderBy('products.id', 'desc')
                 ->get();
             $units = unit::orderBy('id', 'desc')->get();
@@ -54,13 +54,13 @@ class FilterController extends Controller
     public function FilterListMenu(Request $request, $typeId)
     {
         $user = $request->user('api');
-        if (isset($user, $user->restaurant)) {
+        if (isset($user, $user->customer)) {
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file')
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-                ->where('products.restaurant_id', $user->restaurant->id)
+                ->where('products.restaurant_id', $user->customer->restaurant_id)
                 ->where('products.product_type_id', $typeId)
                 ->orderBy('products.id', 'desc')
                 ->get();
