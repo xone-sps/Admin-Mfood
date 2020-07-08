@@ -19,3 +19,11 @@ Route::group(['prefix' => ''], function () {
     Route::get('/tab-manage', 'RestaurantController@index')->name('restaurant.manage');
     Route::get('/tab-list-order', 'RestaurantController@index')->name('restaurant.list-order');
 });
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/login', 'AdminController@index')->name('admin.login');
+    Route::get('/restaurant', 'AdminController@index')->name('admin.restaurant');
+    Route::get('/dashboard', 'AdminController@index')->name('admin.dashboarsd');
+    Route::get('/report', 'AdminController@index')->name('admin.report');
+    Route::get('/invoice', 'AdminController@index')->name('admin.invoice');
+});
