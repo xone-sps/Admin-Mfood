@@ -10,6 +10,7 @@ use DB;
 
 class FilterController extends Controller
 {
+    const ImagePath = '/images/restaurants/file_menu';
     # Upload-File
     public function UploadFile(Request $request)
     {
@@ -46,11 +47,13 @@ class FilterController extends Controller
 
     public function FilterListMenu(Request $request, $typeId)
     {
+        $url = url(self::ImagePath);
         $user = $request->user('api');
         if (isset($user, $user->customer)) {
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file')
+                ->selectRaw("CONCAT('{$url}/', products.file) as file_url")
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
                 ->where('products.restaurant_id', $user->customer->restaurant_id)
