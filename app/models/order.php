@@ -3,6 +3,7 @@
 namespace App\models;
 
 use App\Helpers\AppHelper;
+use App\Http\Controllers\FilterController;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -116,6 +117,7 @@ class order extends Model
                 } else {
                     $finalAmount = ($product->amount - $totalProductPendingOrderAmount);
                 }
+                $product->file_url = url(FilterController::ImagePath) . '/' . $product->file;
                 $orderCollection->push([
                     'productId' => $productId,
                     'amount' => $finalAmount,
