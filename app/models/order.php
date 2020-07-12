@@ -110,20 +110,27 @@ class order extends Model
                 ->where('orders.status_payment', 'pending')
                 ->sum('order_details.amount');
             if (isset($product)) {
+                $product->file_url = url(FilterController::ImagePath) . '/' . $product->file;
                 $calculateAmount = $product->amount - $totalProductPendingOrderAmount; // 4 - 2 = 2
                 $calculateAmount = $calculateAmount - $amount; // 2 - 4 = -2 || 2 - 2 = 0 || 2 - 1 = 1
                 if ($calculateAmount >= 0) {
-                    $finalAmount = $amount;
+                    $orderCollection->push([
+                        'productId' => $productId,
+                        'amount' => $amount,
+                        'product' => $product,
+                        'totalPendingAmount' => $totalProductPendingOrderAmount,
+                    ]);
                 } else {
-                    $finalAmount = ($product->amount - $totalProductPendingOrderAmount);
+                    $remainingAmount = ($product->amount - $totalProductPendingOrderAmount);
+                    if ($remainingAmount > 0) {
+                        $orderCollection->push([
+                            'productId' => $productId,
+                            'amount' => $remainingAmount,
+                            'product' => $product,
+                            'totalPendingAmount' => $totalProductPendingOrderAmount,
+                        ]);
+                    }
                 }
-                $product->file_url = url(FilterController::ImagePath) . '/' . $product->file;
-                $orderCollection->push([
-                    'productId' => $productId,
-                    'amount' => $finalAmount,
-                    'product' => $product,
-                    'totalAmount' => $totalProductPendingOrderAmount,
-                ]);
             }
         }
         return $orderCollection;
