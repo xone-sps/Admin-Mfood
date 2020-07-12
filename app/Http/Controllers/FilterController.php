@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\models\order;
 use App\models\unit;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use App\models\product_type;
 use App\models\product;
@@ -11,6 +13,7 @@ use DB;
 class FilterController extends Controller
 {
     const ImagePath = '/images/restaurants/file_menu';
+
     # Upload-File
     public function UploadFile(Request $request)
     {
@@ -50,15 +53,25 @@ class FilterController extends Controller
         $url = url(self::ImagePath);
         $user = $request->user('api');
         if (isset($user, $user->customer)) {
+            $restaurantId = $user->customer->restaurant_id;
+            $orders = order::selectRaw('order_details.product_id, sum(order_details.amount) as availableAmount')
+                ->join('order_details', 'order_details.order_id', 'orders.id')
+                ->where('orders.restaurant_id', $restaurantId)
+                ->where('orders.status_payment', 'pending')
+                ->groupBy(['order_details.product_id']);
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
-                'product_type.type', 'product_type.id as proTypeId', 'products.file')
+                'product_type.type', 'product_type.id as proTypeId', 'products.file',
+                'order_details.availableAmount')
                 ->selectRaw("CONCAT('{$url}/', products.file) as file_url")
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-                ->where('products.restaurant_id', $user->customer->restaurant_id)
+                ->leftJoinSub($orders, 'order_details', function (JoinClause $leftJoin) {
+                    return $leftJoin->on('products.id', '=', 'order_details.product_id');
+                })->where('products.restaurant_id', $restaurantId)
                 ->where('products.product_type_id', $typeId)
                 ->orderBy('products.id', 'desc')
+                ->having('order_details.availableAmount', '>', 0)
                 ->get();
             return response()->json([
                 'filters' => $filters

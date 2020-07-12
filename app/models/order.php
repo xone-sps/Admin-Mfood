@@ -104,12 +104,13 @@ class order extends Model
         foreach ($orders as $jsonObj) {
             $productId = $jsonObj->productId;
             $amount = $jsonObj->amount;
-            $product = product::find($productId);
-            $totalProductPendingOrderAmount = order::join('order_details', 'order_details.order_id', 'orders.id')
-                ->where('order_details.product_id', $productId)
-                ->where('orders.status_payment', 'pending')
-                ->sum('order_details.amount');
+            $product = product::where('restaurant_id', $restaurantId)->where('id', $productId)->first();
             if (isset($product)) {
+                $totalProductPendingOrderAmount = order::join('order_details', 'order_details.order_id', 'orders.id')
+                    ->where('order_details.product_id', $productId)
+                    ->where('orders.status_payment', 'pending')
+                    ->where('orders.restaurant_id', $product->restaurant_id)
+                    ->sum('order_details.amount');
                 $product->file_url = url(FilterController::ImagePath) . '/' . $product->file;
                 $calculateAmount = $product->amount - $totalProductPendingOrderAmount; // 4 - 2 = 2
                 $calculateAmount = $calculateAmount - $amount; // 2 - 4 = -2 || 2 - 2 = 0 || 2 - 1 = 1
