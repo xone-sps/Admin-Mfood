@@ -62,7 +62,7 @@ class FilterController extends Controller
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file')
-                ->selectRaw("CONCAT('{$url}/', products.file) as file_url, IFNULL(order_items.pendingAmount, 0)")
+                ->selectRaw("CONCAT('{$url}/', products.file) as file_url, IFNULL(order_items.pendingAmount, 0) as pendingAmount")
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
                 ->leftJoinSub($orders, 'order_items', function (JoinClause $leftJoin) {
