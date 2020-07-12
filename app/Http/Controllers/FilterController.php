@@ -62,16 +62,16 @@ class FilterController extends Controller
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file',
-                'order_details.availableAmount')
+                'order_items.availableAmount')
                 ->selectRaw("CONCAT('{$url}/', products.file) as file_url")
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
-                ->leftJoinSub($orders, 'order_details', function (JoinClause $leftJoin) {
-                    return $leftJoin->on('products.id', '=', 'order_details.product_id');
+                ->leftJoinSub($orders, 'order_items', function (JoinClause $leftJoin) {
+                    return $leftJoin->on('products.id', '=', 'order_items.product_id');
                 })->where('products.restaurant_id', $restaurantId)
                 ->where('products.product_type_id', $typeId)
                 ->orderBy('products.id', 'desc')
-                ->having('order_details.availableAmount', '>', 0)
+                ->having('order_items.availableAmount', '>', 0)
                 ->get();
             return response()->json([
                 'filters' => $filters
