@@ -71,7 +71,7 @@ class FilterController extends Controller
                 })->where('products.restaurant_id', $restaurantId)
                 ->where('products.product_type_id', $typeId)
                 ->orderBy('products.id', 'desc')
-                ->havingRaw('(products.amount - order_items.pendingAmount) > 0')
+                // ->havingRaw('(products.amount - order_items.pendingAmount) > 0')
                 ->get();
             return response()->json([
                 'filters' => $filters
