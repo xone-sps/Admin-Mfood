@@ -54,7 +54,7 @@ class FilterController extends Controller
         $user = $request->user('api');
         if (isset($user, $user->customer)) {
             $restaurantId = $user->customer->restaurant_id;
-            $orders = order::selectRaw('order_details.product_id, sum(order_details.amount) as availableAmount')
+            $orders = order::selectRaw('order_details.product_id, sum(order_details.amount) as pendingAmount')
                 ->join('order_details', 'order_details.order_id', 'orders.id')
                 ->where('orders.restaurant_id', $restaurantId)
                 ->where('orders.status_payment', 'pending')
@@ -62,7 +62,7 @@ class FilterController extends Controller
             $filters = product::select('products.id', 'products.product_name',
                 'products.amount', 'products.price', 'unit.unit', 'unit.id as unitId',
                 'product_type.type', 'product_type.id as proTypeId', 'products.file',
-                'order_items.availableAmount')
+                'order_items.pendingAmount')
                 ->selectRaw("CONCAT('{$url}/', products.file) as file_url")
                 ->leftjoin('product_types as product_type', 'product_type.id', '=', 'products.product_type_id')
                 ->leftjoin('units as unit', 'unit.id', '=', 'products.unit_id')
@@ -71,7 +71,7 @@ class FilterController extends Controller
                 })->where('products.restaurant_id', $restaurantId)
                 ->where('products.product_type_id', $typeId)
                 ->orderBy('products.id', 'desc')
-                ->having('order_items.availableAmount', '>', 0)
+                ->havingRaw('(products.amount - order_items.pendingAmount)', '>', 0)
                 ->get();
             return response()->json([
                 'filters' => $filters
