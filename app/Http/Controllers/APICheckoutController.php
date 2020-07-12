@@ -15,7 +15,8 @@ class APICheckoutController extends Controller
      */
     public function checkingOrderProductsQuantity(OrderProductRequest $request)
     {
+        $user = $request->user('api');
         $orders = AppHelper::parseJSON($request->orders);
-        return order::checkingOrderProductQuantity($orders);
+        return order::checkingOrderProductQuantity($orders, $user->customer->restaurant_id);
     }
 }

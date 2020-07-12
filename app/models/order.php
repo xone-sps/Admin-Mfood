@@ -13,12 +13,13 @@ class order extends Model
     public static function OrderProducts(Customer $customer, $data)
     {
         $orders = AppHelper::parseJSON($data);
-        $validOrders = self::checkingOrderProductQuantity($orders);
+        $restaurantId = $customer->restaurant->id;
+        $validOrders = self::checkingOrderProductQuantity($orders, $restaurantId);
         if (count($validOrders) > 0) {
             $add_order = new self;
             $add_order->total = 0;
             $add_order->customer_id = $customer->id;
-            $add_order->restaurant_id = $customer->restaurant->id;
+            $add_order->restaurant_id = $restaurantId;
             $add_order->save();
             # Update-OrderId
             $update_orderId = self::find($add_order->id);
@@ -98,7 +99,7 @@ class order extends Model
         }
     }
 
-    public static function checkingOrderProductQuantity($orders)
+    public static function checkingOrderProductQuantity($orders, $restaurantId)
     {
         $orderCollection = collect([]);
         foreach ($orders as $jsonObj) {
