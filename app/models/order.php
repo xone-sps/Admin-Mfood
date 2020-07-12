@@ -122,6 +122,7 @@ class order extends Model
                     'productId' => $productId,
                     'amount' => $finalAmount,
                     'product' => $product,
+                    'totalAmount' => $totalProductPendingOrderAmount,
                 ]);
             }
         }
