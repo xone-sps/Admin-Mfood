@@ -9,7 +9,6 @@ class product extends Model
     protected $casts = [
         'price' => 'double'
     ];
-
     public static function AddProducts($item, $restaurantId)
     {
         $fileName = substr($item->file, 0, strrpos($item->file, "."));
@@ -63,8 +62,6 @@ class product extends Model
             }
             $edit_product->file = $item->file;
         }
-
-
         $edit_product->product_name = $item->product_name;
         $edit_product->amount = $item->amount;
         $edit_product->price = $item->price;
